@@ -1,3 +1,4 @@
+import java.util.Random;
 
 class GameState {
   int holeNum = 0;
@@ -13,6 +14,10 @@ class GameState {
   int[] moleExistence;
 
   int point;
+
+  int score = 0;
+
+  int gameDuration= 20;
 
   HashMap<Integer, PMatrix3D> markerPoseMap;
   HashMap<Integer, PMatrix3D> frameMarkerPoseMap;
@@ -62,7 +67,7 @@ class GameState {
         holeState[i] += 1;
       }
       else {
-        moleState[i] = 1;
+        //moleState[i] = 1; @Fariz it makes molestate always be 1 and can't popdown the mole
         holeState[i] = 0;
       }
 
@@ -111,7 +116,7 @@ class GameState {
     }
   }
 
-  void molePopUp(int moleIndex){
+  void molePopUp(int moleIndex, long passTime){
     // PMatrix3D pose_this = markerPoseMap.get(ExistenceList[moleIndex]);
     // PMatrix3D pose_look = markerPoseMap.get(ExistenceList[(moleIndex+1)%2]);
     PMatrix3D pose_this = markerPoseMap.get(holeExistence[moleIndex]);
@@ -133,11 +138,11 @@ class GameState {
             angle -= 40;
             rotateZ(angle);
             // println("mole hit : "+moleHitDebug);
-            drawMole(snowmanSize,1);
+            drawMole(calcMoleSize(moleIndex, passTime),1);
         } else {
-            drawMole(snowmanSize,0);
+            drawMole(calcMoleSize(moleIndex, passTime),0);
         }
-        
+
         noFill();
         strokeWeight(3);
         stroke(255, 0, 0);
@@ -212,6 +217,54 @@ class GameState {
 
   int getNumberofHole(){
     return holeExistence.length;
+  }
+
+  int getScore(){
+      return score;
+  }
+
+  void addScore(){
+      score += 10;
+  }
+
+  void minusScore(){
+      score -= 5;
+  }
+
+  boolean timeup(long passTime, long dueTime){
+      if(passTime >= dueTime) return true;
+      return false;
+  }
+
+  int randAppearDuration(){
+      return rand.nextInt(2000)+1000;
+  }
+
+  int randHideDuration(){
+      return rand.nextInt(3000)+2000;
+  }
+
+  float calcMoleSize(int moleIndex, long passTime){
+    float moleSize = 0;
+    int frame = int(passTime/(moleAppearDuration[moleIndex]/40));
+
+    switch(getMoleState(moleIndex)){
+      case 0:
+        moleSize = -0.00005*frame*frame+0.002*frame;
+        break;
+      case 1:
+        moleSize = -0.00005*frame*frame+0.002*frame;
+        break;
+      case 2:
+        frame += 20;
+        moleSize = -0.00005*frame*frame+0.002*frame;
+        break;
+      default:
+        moleSize = 0;
+        break;
+    }
+    if(moleSize<0) moleSize = 0;
+    return moleSize;
   }
 }
 
