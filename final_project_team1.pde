@@ -102,7 +102,7 @@ void selectCamera() {
 
     // Or, the settings can be defined based on the text in the list
     // cap = new Capture(this, 1280, 720, "USB2.0 HD UVC WebCam", 30);
-    cap = new Capture(this, 640, 480, 30);
+    cap = new Capture(this, 1280, 720, 10);
   }
 }
 
