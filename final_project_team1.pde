@@ -3,14 +3,8 @@ import processing.video.*;
 import java.util.ArrayList;
 import java.lang.*;
 
-import picking.*;
-
-Picker picker;
-
 // final boolean MARKER_TRACKER_DEBUG = false;
 boolean MARKER_TRACKER_DEBUG = true;
-
-final boolean BALL_DEBUG = false;
 
 final boolean USE_SAMPLE_IMAGE = false;
 
@@ -31,28 +25,12 @@ OpenCV opencv;
 // **************************************************************
 float fov = 45; // for camera capture
 
-// Marker codes to draw snowmans example
-// final int[] ExistenceList = {0x1228, 0x0690};
-// int towards = 0x1228; // the target marker that the ball flies towards
-int towardscnt = 0;   // if ball reached, +1 to change the target
 
-int[] ExistenceList;
-int[] ExistenceState;
-int towards = 0x005A; //for throwing ball example
 boolean calibration_boolean = false;
-
-final float GA = 9.80665;
-
-PVector snowmanLookVector;
-PVector ballPos;
-float ballAngle = 45;
-float ballspeed = 0;
 
 final int ballTotalFrame = 10;
 final float snowmanSize = 0.020;
 int frameCnt = 0;
-
-// HashMap<Integer, PMatrix3D> markerPoseMap;
 
 MarkerTracker markerTracker;
 PImage img;
@@ -167,7 +145,7 @@ void setup() {
   setupButton();
 
   // Align the camera coordinate system with the world coordinate system
-  // (cf. drawSnowman.pde)
+  // (cf. drawPrimitive.pde) 
   PMatrix3D cameraMat = ((PGraphicsOpenGL)g).camera;
   cameraMat.reset();
 
@@ -256,7 +234,7 @@ void draw() {
     perspective(radians(fov), float(width)/float(height), 0.01, 1000.0);
 
     // setup light
-    // (cf. drawSnowman.pde)
+    // (cf. drawPrimitive.pde) 
     ambientLight(180, 180, 180);
     directionalLight(180, 150, 120, 0, 1, 0);
     lights();
@@ -323,11 +301,6 @@ void draw() {
     }*/
 
     gameState.updateMoleExistence();
-    // int id = picker.get(mouseX, mouseY);
-    // println(id);
-    // if(contains(ExistenceList, id)){
-    //   println("mouse over hole " + id);
-    // }
   
     // Your Code for Homework 6 (20/06/03) - End
     // **********************************************
@@ -340,12 +313,11 @@ void draw() {
 }
 
 void update(int x, int y) {
-  if ( overCircle(circleX, circleY, circleSize) ) {
+  if (overCircle(circleX, circleY, circleSize)) {
     circleOver = true;
   } else {
     circleOver = false;
   }
-  // println(circleOver);
 }
 
 boolean overCircle(int x, int y, int diameter) {
