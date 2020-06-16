@@ -42,14 +42,14 @@ void drawCylinder(float topRadius, float bottomRadius, float tall, int sides) {
 void drawHoleActive(float r, int id) {
   r *= 0.7;
 
-  picker.start(id);
+  // picker.start(id);
   pushMatrix();
     fill(0);
     noStroke();
     ellipse(0,0,2*r,2*r);
   popMatrix();
   // picker.stop();
-  picker.draw();
+  // picker.draw();
 
   pushMatrix();
     float theta = 0;

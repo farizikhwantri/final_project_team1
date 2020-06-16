@@ -28,6 +28,8 @@ float fov = 45; // for camera capture
 
 boolean calibration_boolean = false;
 
+PVector snowmanLookVector;
+
 final int ballTotalFrame = 10;
 final float snowmanSize = 0.020;
 int frameCnt = 0;
@@ -151,7 +153,6 @@ void setup() {
 
   keyState = new KeyState();
 
-  ballPos = new PVector();  // ball position
   // markerPoseMap = new HashMap<Integer, PMatrix3D>();  // hashmap (code, pose)
 
   calibration_boolean = false;
